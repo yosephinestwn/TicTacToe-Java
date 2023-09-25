@@ -5,49 +5,33 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Font;
 import java.awt.Toolkit;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.ImageIcon;
-import java.io.*;
+import javax.swing.*;
 import java.util.Random;
-import java.util.Scanner;
 
 public class Board extends JPanel implements ActionListener{
     //BOARD ITEMS
-    private int[][] board = new int[3][3];
+    private final int[][] board = new int[3][3];
     private GameStatus gameStatus = null;
     private Icon player1;
     private Icon player2;
     private boolean finished = false;
     private JButton button;
     private  JButton button2;
-
+    private JLabel label;
     private  JButton button3;
     private  JButton button4;
     private Opponent opponent;
-    private JFrame frame;
+    private final JFrame frame;
     private boolean ourTurn;
+    private TicTacListener mouse;
 
-
-
-    //PAINT
-    private int lineWidth = 5;
-    int lineLength = 270;
-    int x = 15;
-    int y = 100;
-    int offset = 95;
-    int a = 0;
-    int b = 5;
-    int selX = 0;
-    int selY = 0;
+    private final int offset = 95;
 
     //COLORS
-    private Color turtle = new Color(152, 109, 142);
-    private Color orange = new Color(255, 165, 0);
-    private Color offwhite = new Color(0xf7f7f7);
-    private Color darkgrey = new Color(239, 227,208);
-    private Color pink = new Color(130,92,121);
+    private final Color turtle = new Color(152, 109, 142);
+    private final Color offwhite = new Color(0xf7f7f7);
+    private final Color darkgrey = new Color(239, 227,208);
+    private final Color pink = new Color(130,92,121);
 
     public Board(){
         frame = new JFrame("Tic Tac Toe");
@@ -65,9 +49,52 @@ public class Board extends JPanel implements ActionListener{
     }
 
     private void newGame(){
-        button = new JButton("New Game");
+        button = new JButton("New Game"){
+            @Override
+            public void setFont(Font font) {
+                super.setFont(new Font("Serif", Font.BOLD, 20));
+            }
+
+            @Override
+            public void setSize(int width, int height) {
+                super.setSize(150, 60);
+            }
+
+            @Override
+            public void setBackground(Color bg) {
+                super.setBackground(Color.LIGHT_GRAY);
+            }
+
+            @Override
+            public void setLocation(int x, int y) {
+                super.setLocation(70, 160);
+            }
+        };
         button.addActionListener(e->ourIcon());
-        add(button);frame.add(this);
+        label = new JLabel("Start a new Game?"){
+            @Override
+            public void setFont(Font font) {
+                super.setFont(new Font("SansSerif", Font.BOLD, 20));
+            }
+
+            @Override
+            public void setLocation(int x, int y) {
+                super.setLocation(60, 100);
+            }
+
+            @Override
+            public void setBackground(Color bg) {
+                super.setBackground(Color.LIGHT_GRAY);
+            }
+
+            @Override
+            public void setOpaque(boolean isOpaque) {
+                super.setOpaque(true);
+            }
+        };
+        add(button);
+        add(label);
+        frame.add(this);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.pack();
@@ -77,18 +104,21 @@ public class Board extends JPanel implements ActionListener{
     private void drawBoard(Graphics page){
         setBackground(turtle);
         page.setColor(darkgrey);
-        page.fillRoundRect(x,y, lineLength, lineWidth, 5, 30);
-        page.fillRoundRect(x,y+offset, lineLength, lineWidth, 5, 30);
-        page.fillRoundRect(y,x, lineWidth, lineLength, 30, 5);
-        page.fillRoundRect(y+offset,x, lineWidth, lineLength, 30, 5);
+        //PAINT
+        int lineWidth = 5;
+        int lineLength = 270;
+        int x = 15;
+        int y = 100;
+        page.fillRoundRect(x, y, lineLength, lineWidth, 5, 30);
+        page.fillRoundRect(x, y +offset, lineLength, lineWidth, 5, 30);
+        page.fillRoundRect(y, x, lineWidth, lineLength, 30, 5);
+        page.fillRoundRect(y +offset, x, lineWidth, lineLength, 30, 5);
     }
 
     private void drawGame(Graphics page){
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 3; j++){
-                if(board[i][j] == 0){
-                }
-                else if(board[i][j] == 1){
+                if(board[i][j] == 1){
                     if(player1 == Icon.CROSS){
                         ImageIcon X = new ImageIcon("C:/Users/agata/Downloads/orangex-removebg-preview.png");
                         Image xImg = X.getImage();
@@ -97,7 +127,7 @@ public class Board extends JPanel implements ActionListener{
                         Image newnewImg = newXIcon.getImage();
                         page.drawImage(newnewImg, 30+ offset*i,30+offset*j, null);
                     }
-                    else{
+                    else if(board[i][j] == 2){
                         page.setColor(offwhite);
                         page.fillOval(30+offset*i, 30+offset*j,50,50);
                         page.setColor(turtle);
@@ -127,8 +157,70 @@ public class Board extends JPanel implements ActionListener{
 
     private void playAgain(){
         frame.setTitle("Want to Play Again?");
-        button = new JButton("Yes");
-        button2 = new JButton("No");
+        label = new JLabel("Want to play again?"){
+            @Override
+            public void setFont(Font font) {
+                super.setFont(new Font("SansSerif", Font.BOLD, 20));
+            }
+
+            @Override
+            public void setLocation(int x, int y) {
+                super.setLocation(60, 70);
+            }
+
+            @Override
+            public void setBackground(Color bg) {
+                super.setBackground(Color.LIGHT_GRAY);
+            }
+
+            @Override
+            public void setOpaque(boolean isOpaque) {
+                super.setOpaque(true);
+            }
+        };
+        add(label);
+        button = new JButton("YES"){
+            @Override
+            public void setFont(Font font) {
+                super.setFont(new Font("Serif", Font.BOLD, 20));
+            }
+
+            @Override
+            public void setSize(int width, int height) {
+                super.setSize(150, 40);
+            }
+
+            @Override
+            public void setBackground(Color bg) {
+                super.setBackground(Color.LIGHT_GRAY);
+            }
+
+            @Override
+            public void setLocation(int x, int y) {
+                super.setLocation(70, 130);
+            }
+        };
+        button2 = new JButton("NO"){
+            @Override
+            public void setFont(Font font) {
+                super.setFont(new Font("Serif", Font.BOLD, 20));
+            }
+
+            @Override
+            public void setSize(int width, int height) {
+                super.setSize(150, 40);
+            }
+
+            @Override
+            public void setBackground(Color bg) {
+                super.setBackground(Color.LIGHT_GRAY);
+            }
+
+            @Override
+            public void setLocation(int x, int y) {
+                super.setLocation(70, 190);
+            }
+        };
         button.addActionListener(this);
         button2.addActionListener(e-> System.exit(0));
         add(button);
@@ -148,7 +240,7 @@ public class Board extends JPanel implements ActionListener{
         page.setFont(font);
 
         page.setColor(offwhite);
-        Font font1 = new Font("Serif", Font.ITALIC, 20);
+        Font font1 = new Font("Serif", Font.ITALIC+Font.BOLD, 20);
         page.setFont(font1);
 
         //DRAW WHO'S TURN
@@ -158,7 +250,9 @@ public class Board extends JPanel implements ActionListener{
                     page.drawString("YOU WIN", 310, 150);
                 }
                 else if(player2 == Icon.CROSS){
-                    page.drawString("THE WINNER IS PLAYER2", 310, 150);
+                    page.drawString("THE WINNER", 310, 60);
+                    page.drawString("IS YOUR", 310, 120);
+                    page.drawString("OPPONENT", 310, 180);
                 }
             }
             else if(gameStatus == GameStatus.CIRCLE){
@@ -166,7 +260,9 @@ public class Board extends JPanel implements ActionListener{
                     page.drawString("YOU WIN", 310, 150);
                 }
                 else if(player2 == Icon.CIRCLE){
-                    page.drawString("THE WINNER IS PLAYER2", 310, 150);
+                    page.drawString("THE WINNER", 310, 60);
+                    page.drawString("IS YOUR", 310, 120);
+                    page.drawString("OPPONENT", 310, 180);
                 }
             }
             else{
@@ -193,9 +289,9 @@ public class Board extends JPanel implements ActionListener{
 
         Image cookie = Toolkit.getDefaultToolkit().getImage("C:/Users/agata/Downloads/pngtree-game-control-glyph-icon-vector-png-image_1904105-removebg-preview.png");
         page.drawImage(cookie, 345, 235, 30, 30, this);
-        Font c = new Font("Courier", Font.BOLD+Font.CENTER_BASELINE, 13);
+        Font c = new Font("Courier", Font.BOLD, 13);
         page.setFont(c);
-        page.drawString("Tic Tac Toe", 310, 280);
+        page.drawString("Tic Tac Toe", 325, 280);
     }
 
     @Override
@@ -205,9 +301,72 @@ public class Board extends JPanel implements ActionListener{
 
     private void ourIcon(){
         remove(button);
+        remove(label);
         frame.setTitle("Choose Your Icon");
-        button = new JButton("Icon Cross");
-        button2 = new JButton("Icon Circle");
+        label = new JLabel("Choose Your Icon!"){
+            @Override
+            public void setFont(Font font) {
+                super.setFont(new Font("SansSerif", Font.BOLD, 20));
+            }
+
+            @Override
+            public void setLocation(int x, int y) {
+                super.setLocation(60, 70);
+            }
+
+            @Override
+            public void setBackground(Color bg) {
+                super.setBackground(Color.LIGHT_GRAY);
+            }
+
+            @Override
+            public void setOpaque(boolean isOpaque) {
+                super.setOpaque(true);
+            }
+        };
+        add(label);
+        button = new JButton("Icon Cross"){
+            @Override
+            public void setFont(Font font) {
+                super.setFont(new Font("Serif", Font.BOLD, 20));
+            }
+
+            @Override
+            public void setSize(int width, int height) {
+                super.setSize(150, 40);
+            }
+
+            @Override
+            public void setBackground(Color bg) {
+                super.setBackground(Color.LIGHT_GRAY);
+            }
+
+            @Override
+            public void setLocation(int x, int y) {
+                super.setLocation(70, 130);
+            }
+        };
+        button2 = new JButton("Icon Circle"){
+            @Override
+            public void setFont(Font font) {
+                super.setFont(new Font("Serif", Font.BOLD, 20));
+            }
+
+            @Override
+            public void setSize(int width, int height) {
+                super.setSize(150, 40);
+            }
+
+            @Override
+            public void setBackground(Color bg) {
+                super.setBackground(Color.LIGHT_GRAY);
+            }
+
+            @Override
+            public void setLocation(int x, int y) {
+                super.setLocation(70, 190);
+            }
+        };
         button.addActionListener(e -> {
             player1 = Icon.CROSS;
             player2 = Icon.CIRCLE;
@@ -231,11 +390,113 @@ public class Board extends JPanel implements ActionListener{
     private void chooseOpponent(){
         remove(button);
         remove(button2);
+        remove(label);
         frame.setTitle("Choose Your Opponent");
-        button = new JButton("Human Player");
-        button2 = new JButton("Normal Player (Robot)");
-        button3 = new JButton("Random Player (Robot)");
-        button4 = new JButton("Perfect Player");
+        label = new JLabel("Choose Your Opponent!"){
+            @Override
+            public void setFont(Font font) {
+                super.setFont(new Font("SansSerif", Font.BOLD, 20));
+            }
+
+            @Override
+            public void setLocation(int x, int y) {
+                super.setLocation(40, 20);
+            }
+
+            @Override
+            public void setBackground(Color bg) {
+                super.setBackground(Color.LIGHT_GRAY);
+            }
+
+            @Override
+            public void setOpaque(boolean isOpaque) {
+                super.setOpaque(true);
+            }
+        };
+        button = new JButton("Human Player"){
+            @Override
+            public void setFont(Font font) {
+                super.setFont(new Font("Serif", Font.BOLD, 20));
+            }
+
+            @Override
+            public void setSize(int width, int height) {
+                super.setSize(150, 40);
+            }
+
+            @Override
+            public void setBackground(Color bg) {
+                super.setBackground(Color.LIGHT_GRAY);
+            }
+
+            @Override
+            public void setLocation(int x, int y) {
+                super.setLocation(70, 70);
+            }
+        };
+        button2 = new JButton("Normal Player (Robot)"){
+            @Override
+            public void setFont(Font font) {
+                super.setFont(new Font("Serif", Font.BOLD, 20));
+            }
+
+            @Override
+            public void setSize(int width, int height) {
+                super.setSize(150, 40);
+            }
+
+            @Override
+            public void setBackground(Color bg) {
+                super.setBackground(Color.LIGHT_GRAY);
+            }
+
+            @Override
+            public void setLocation(int x, int y) {
+                super.setLocation(70, 130);
+            }
+        };
+        button3 = new JButton("Random Player (Robot)"){
+            @Override
+            public void setFont(Font font) {
+                super.setFont(new Font("Serif", Font.BOLD, 20));
+            }
+
+            @Override
+            public void setSize(int width, int height) {
+                super.setSize(150, 40);
+            }
+
+            @Override
+            public void setBackground(Color bg) {
+                super.setBackground(Color.LIGHT_GRAY);
+            }
+
+            @Override
+            public void setLocation(int x, int y) {
+                super.setLocation(70, 190);
+            }
+        };
+        button4 = new JButton("Perfect Player (Robot)"){
+            @Override
+            public void setFont(Font font) {
+                super.setFont(new Font("Serif", Font.BOLD, 20));
+            }
+
+            @Override
+            public void setSize(int width, int height) {
+                super.setSize(150, 40);
+            }
+
+            @Override
+            public void setBackground(Color bg) {
+                super.setBackground(Color.LIGHT_GRAY);
+            }
+
+            @Override
+            public void setLocation(int x, int y) {
+                super.setLocation(70, 250);
+            }
+        };
 
         button.addActionListener(e -> {
             opponent = null;
@@ -253,6 +514,7 @@ public class Board extends JPanel implements ActionListener{
             new Perfect_Player();
             startGame();
         });
+        add(label);
         add(button);
         add(button2);
         add(button3);
@@ -265,8 +527,7 @@ public class Board extends JPanel implements ActionListener{
         repaint();
     }
 
-    private GameStatus whoWon(){
-        gameStatus = null;
+    private void whoWon(){
         GameStatus result = GameStatus.TIE;
         boolean full = true;
         for(int i = 0; i < 3; i++){
@@ -324,12 +585,7 @@ public class Board extends JPanel implements ActionListener{
             }
         }
         if(result == GameStatus.TIE){
-            if(board[0][0] != 0 &&
-                    board[1][1] != 0 &&
-                    board[2][2] != 0 &&
-                    board[0][0] == board[1][1] &&
-                    board[0][0] == board[2][2] &&
-                    board[1][1] == board[2][2]){
+            if(board[0][0] != 0 && board[1][1] != 0 && board[2][2] != 0 && board[0][0] == board[1][1] && board[0][0] == board[2][2]){
                 if(board[0][0]==1){
                     if(player1 == Icon.CIRCLE){
                         result= GameStatus.CIRCLE;
@@ -347,12 +603,7 @@ public class Board extends JPanel implements ActionListener{
                     }
                 }
             }
-            else if(board[0][2] != 0 &&
-                    board[1][1] != 0 &&
-                    board[2][0] != 0 &&
-                    board[0][2] == board[1][1] &&
-                    board[0][2] == board[2][0] &&
-                    board[1][1] == board[2][0]){
+            else if(board[0][2] != 0 && board[1][1] != 0 && board[2][0] != 0 && board[0][2] == board[1][1] && board[0][2] == board[2][0]){
                 if(board[0][2]==1){
                     if(player1 == Icon.CIRCLE){
                         result= GameStatus.CIRCLE;
@@ -386,15 +637,13 @@ public class Board extends JPanel implements ActionListener{
         if(finished){
             playAgain();
         }
-        return gameStatus;
     }
 
-    public JButton getButton(){
-        return button;
-    }
     private void resetGame(){
         remove(button);
         remove(button2);
+        remove(label);
+        removeMouseListener(mouse);
         finished = false;
         for(int i = 0; i < 3; i++){
             for(int j = 0; j <3; j++){
@@ -411,26 +660,27 @@ public class Board extends JPanel implements ActionListener{
         drawGame(page);
     }
     private void startGame(){
+        remove(label);
         remove(button);
         remove(button2);
         remove(button3);
         remove(button4);
         Random rand = new Random();
         int random = rand.nextInt(2);
-        if(random == 0){
-            ourTurn = true;
-        }
-        else ourTurn = false;
-        addMouseListener(new TicTacListener());
+        ourTurn = random == 0;
+        mouse = new TicTacListener();
+        addMouseListener(mouse);
     }
 
     private class TicTacListener implements MouseListener{
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            selX = -1;
-            selY = -1;
+            int selX ;
+            int selY ;
             if(!finished){
+                int a;
+                int b;
                 if(ourTurn){
                     a = e.getX();
                     b = e.getY();
@@ -453,7 +703,7 @@ public class Board extends JPanel implements ActionListener{
                     else if(b > 200 & b < 299){
                         selY = 2;
                     }
-                    else selY=-1;
+                    else selY =-1;
                     if(selX != -1 && selY != -1){
                         if(board[selY][selY] == 0){
                             board[selX][selY] = 1;
@@ -487,7 +737,7 @@ public class Board extends JPanel implements ActionListener{
                         else if(b > 200 & b < 299){
                             selY = 2;
                         }
-                        else selY=-1;
+                        else selY =-1;
                         if(selX != -1 && selY != -1){
                             if(board[selY][selY] == 0){
                                 board[selX][selY] = 2;

@@ -56,13 +56,13 @@ public class Perfect_Player implements Opponent{
         }
         if(!found){
             Random rand = new Random();
-            int random = rand.nextInt(2);
-            if(random ==0){
-                Random_Player.nextMovement(board);
+            int x = rand.nextInt(3);
+            int y = rand.nextInt(3);
+            while(board[x][y] != 0){
+                x = rand.nextInt(3);
+                y = rand.nextInt(3);
             }
-            else{
-                Perfect_Player.nextMovement(board);
-            }
+            board[x][y] = 2;
         }
     }
 }
