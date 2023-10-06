@@ -297,6 +297,14 @@ public class Board extends JPanel implements ActionListener{
 
                 }
             }
+            else{
+                Font font2 = new Font("Serif", Font.ITALIC, 20);
+                page.setFont(font2);
+                page.drawString("THE", 310, 30);
+                page.drawString("GAME", 310, 90);
+                page.drawString("IS", 310, 150);
+                page.drawString("STARTING", 310, 210);
+            }
         }
         //
 
@@ -434,7 +442,7 @@ public class Board extends JPanel implements ActionListener{
 
             @Override
             public void setSize(int width, int height) {
-                super.setSize(150, 40);
+                super.setSize(210, 40);
             }
 
             @Override
@@ -444,7 +452,7 @@ public class Board extends JPanel implements ActionListener{
 
             @Override
             public void setLocation(int x, int y) {
-                super.setLocation(70, 70);
+                super.setLocation(40, 70);
             }
         };
         button2 = new JButton("Normal Player (Robot)"){
@@ -455,7 +463,7 @@ public class Board extends JPanel implements ActionListener{
 
             @Override
             public void setSize(int width, int height) {
-                super.setSize(150, 40);
+                super.setSize(250, 40);
             }
 
             @Override
@@ -465,7 +473,7 @@ public class Board extends JPanel implements ActionListener{
 
             @Override
             public void setLocation(int x, int y) {
-                super.setLocation(70, 130);
+                super.setLocation(20, 130);
             }
         };
         button3 = new JButton("Random Player (Robot)"){
@@ -476,7 +484,7 @@ public class Board extends JPanel implements ActionListener{
 
             @Override
             public void setSize(int width, int height) {
-                super.setSize(150, 40);
+                super.setSize(250, 40);
             }
 
             @Override
@@ -486,7 +494,7 @@ public class Board extends JPanel implements ActionListener{
 
             @Override
             public void setLocation(int x, int y) {
-                super.setLocation(70, 190);
+                super.setLocation(20, 190);
             }
         };
         button4 = new JButton("Perfect Player (Robot)"){
@@ -497,7 +505,7 @@ public class Board extends JPanel implements ActionListener{
 
             @Override
             public void setSize(int width, int height) {
-                super.setSize(150, 40);
+                super.setSize(250, 40);
             }
 
             @Override
@@ -507,7 +515,7 @@ public class Board extends JPanel implements ActionListener{
 
             @Override
             public void setLocation(int x, int y) {
-                super.setLocation(70, 250);
+                super.setLocation(20, 250);
             }
         };
 
