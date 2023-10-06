@@ -26,6 +26,7 @@ public class Board extends JPanel implements ActionListener{
     private TicTacListener mouse;
 
     private final int offset = 95;
+    private boolean started;
 
     //COLORS
     private final Color turtle = new Color(152, 109, 142);
@@ -46,6 +47,7 @@ public class Board extends JPanel implements ActionListener{
         frame.setResizable(false);
         frame.pack();
         frame.setVisible(true);
+        started = false;
     }
 
     private void newGame(){
@@ -125,9 +127,9 @@ public class Board extends JPanel implements ActionListener{
                         Image newXImg = xImg.getScaledInstance(80,80, Image.SCALE_SMOOTH);
                         ImageIcon newXIcon = new ImageIcon(newXImg);
                         Image newnewImg = newXIcon.getImage();
-                        page.drawImage(newnewImg, 30+ offset*i,30+offset*j, null);
+                        page.drawImage(newnewImg, 15+offset*i,15+offset*j, null);
                     }
-                    else if(board[i][j] == 2){
+                    else {
                         page.setColor(offwhite);
                         page.fillOval(30+offset*i, 30+offset*j,50,50);
                         page.setColor(turtle);
@@ -141,7 +143,7 @@ public class Board extends JPanel implements ActionListener{
                         Image newXImg = xImg.getScaledInstance(80,80, Image.SCALE_SMOOTH);
                         ImageIcon newXIcon = new ImageIcon(newXImg);
                         Image newnewImg = newXIcon.getImage();
-                        page.drawImage(newnewImg, 30+ offset*i,30+offset*j, null);
+                        page.drawImage(newnewImg, 15+offset*i,15+offset*j, null);
                     }
                     else{
                         page.setColor(offwhite);
@@ -250,9 +252,10 @@ public class Board extends JPanel implements ActionListener{
                     page.drawString("YOU WIN", 310, 150);
                 }
                 else if(player2 == Icon.CROSS){
-                    page.drawString("THE WINNER", 310, 60);
-                    page.drawString("IS YOUR", 310, 120);
-                    page.drawString("OPPONENT", 310, 180);
+                    page.drawString("THE", 310, 30);
+                    page.drawString("WINNER", 310, 90);
+                    page.drawString("IS YOUR", 310, 150);
+                    page.drawString("OPPONENT", 310, 210);
                 }
             }
             else if(gameStatus == GameStatus.CIRCLE){
@@ -260,29 +263,39 @@ public class Board extends JPanel implements ActionListener{
                     page.drawString("YOU WIN", 310, 150);
                 }
                 else if(player2 == Icon.CIRCLE){
-                    page.drawString("THE WINNER", 310, 60);
-                    page.drawString("IS YOUR", 310, 120);
-                    page.drawString("OPPONENT", 310, 180);
+                    page.drawString("THE", 310, 30);
+                    page.drawString("WINNER", 310, 90);
+                    page.drawString("IS YOUR", 310, 150);
+                    page.drawString("OPPONENT", 310, 210);
                 }
             }
             else{
-                page.drawString("IT IS A TIE", 310, 178);
+                page.drawString("IT", 310, 30);
+                page.drawString("IS", 310, 90);
+                page.drawString("A", 310, 150);
+                page.drawString("TIE", 310, 210);
             }
         }
         else{
-            Font font2 = new Font("Serif", Font.ITALIC, 20);
-            page.setFont(font2);
-            page.drawString("", 325, 180);
-            if(ourTurn){
-                page.drawString("It's", 325, 60);
-                page.drawString("your", 325, 120);
-                page.drawString("turn", 325, 180);
-            }
-            else{
-                page.drawString("It's your", 325, 60);
-                page.drawString("opponent's", 325, 120);
-                page.drawString("turn", 325, 180);
+            if(started){
+                if(ourTurn){
+                    Font font2 = new Font("Serif", Font.ITALIC, 20);
+                    page.setFont(font2);
+                    page.drawString("", 325, 180);
+                    page.drawString("IT'S", 325, 60);
+                    page.drawString("YOUR", 325, 120);
+                    page.drawString("TURN", 325, 180);
+                }
+                else{
+                    Font font2 = new Font("Serif", Font.ITALIC, 18);
+                    page.setFont(font2);
+                    page.drawString("", 325, 180);
+                    page.drawString("IT'S", 310, 30);
+                    page.drawString("YOUR", 310, 90);
+                    page.drawString("OPPONENT'S", 310, 150);
+                    page.drawString("TURN", 310, 210);
 
+                }
             }
         }
         //
@@ -511,7 +524,7 @@ public class Board extends JPanel implements ActionListener{
             startGame();
         });
         button4.addActionListener(e-> {
-            new Perfect_Player();
+            opponent = new Perfect_Player();
             startGame();
         });
         add(label);
@@ -651,6 +664,7 @@ public class Board extends JPanel implements ActionListener{
             }
         }
         newGame();
+        started = false;
     }
 
     public void paintComponent(Graphics page){
@@ -670,6 +684,7 @@ public class Board extends JPanel implements ActionListener{
         ourTurn = random == 0;
         mouse = new TicTacListener();
         addMouseListener(mouse);
+        started = true;
     }
 
     private class TicTacListener implements MouseListener{
@@ -684,33 +699,38 @@ public class Board extends JPanel implements ActionListener{
                 if(ourTurn){
                     a = e.getX();
                     b = e.getY();
-                    if(a > 0 && a < 99){
+                    if(a > 3 && a < 97){
                         selX = 0;
                     }
-                    else if(a > 100 && a < 199){
+                    else if(a > 103 && a < 197){
                         selX = 1;
                     }
-                    else if(a > 200 & a < 299){
+                    else if(a > 203 & a < 297){
                         selX = 2;
                     }
                     else selX = -1;
-                    if(b > 0 && b < 99){
+                    if(b > 3 && b < 97){
                         selY = 0;
                     }
-                    else if(b > 100 && b < 199){
+                    else if(b > 103 && b < 197){
                         selY = 1;
                     }
-                    else if(b > 200 & b < 299){
+                    else if(b > 203 & b < 297){
                         selY = 2;
                     }
                     else selY =-1;
                     if(selX != -1 && selY != -1){
-                        if(board[selY][selY] == 0){
+                        if(board[selX][selY] == 0){
                             board[selX][selY] = 1;
                             ourTurn = false;
                             whoWon();
                         }
-                        else System.out.println("Invalid Click! This field is not empty");
+                        else{
+                            if (board[selX][selY] == 1) {
+                                System.out.println("This field is occupied by you");
+                            }
+                            else System.out.println("This field is occupied by your opponent");
+                        }
                     }
                     else System.out.println("Invalid Click!");
                 }
@@ -718,47 +738,52 @@ public class Board extends JPanel implements ActionListener{
                     if (opponent == null){
                         a = e.getX();
                         b = e.getY();
-                        if(a > 0 && a < 99){
+                        if(a > 3 && a < 97){
                             selX = 0;
                         }
-                        else if(a > 100 && a < 199){
+                        else if(a > 103 && a < 197){
                             selX = 1;
                         }
-                        else if(a > 200 & a < 299){
+                        else if(a > 203 & a < 297){
                             selX = 2;
                         }
                         else selX = -1;
-                        if(b > 0 && b < 99){
+                        if(b > 3 && b < 97){
                             selY = 0;
                         }
-                        else if(b > 100 && b < 199){
+                        else if(b > 103 && b < 197){
                             selY = 1;
                         }
-                        else if(b > 200 & b < 299){
+                        else if(b > 203 & b < 297){
                             selY = 2;
                         }
                         else selY =-1;
                         if(selX != -1 && selY != -1){
-                            if(board[selY][selY] == 0){
+                            if(board[selX][selY] == 0){
                                 board[selX][selY] = 2;
                                 whoWon();
                             }
-                            else System.out.println("Invalid Click! This field is not empty");
+                            else{
+                                if (board[selX][selY] == 1) {
+                                    System.out.println("This field is occupied by you");
+                                }
+                                else System.out.println("This field is occupied by your opponent");
+                            }
                         }
                         else System.out.println("Invalid Click!");
                     }
                     else if(opponent instanceof Normal_Player){
-                            Normal_Player.nextMovement(board);
-                            whoWon();
-                        }
+                        Normal_Player.nextMovement(board);
+                        whoWon();
+                    }
                     else if (opponent instanceof Perfect_Player){
-                            Perfect_Player.nextMovement(board);
-                            whoWon();
-                        }
-                    else {
-                            Random_Player.nextMovement(board);
-                            whoWon();
-                        }
+                        Perfect_Player.nextMovement(board);
+                        whoWon();
+                    }
+                    else if (opponent instanceof Random_Player){
+                        Random_Player.nextMovement(board);
+                        whoWon();
+                    }
                     ourTurn = true;
                 }
             }
