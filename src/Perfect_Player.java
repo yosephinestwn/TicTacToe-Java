@@ -4,6 +4,7 @@ public class Perfect_Player implements Opponent{
 
     public static void nextMovement(int[][] board) {
         boolean found = false;
+
         for(int i = 0; i < 3; i++){
             if((board[i][0] == 2 && board[i][1] == 2) && board[i][2] ==0){
                 found = true;

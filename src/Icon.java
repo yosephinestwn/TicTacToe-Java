@@ -1,3 +1,1 @@
-public enum Icon {
-    CROSS, CIRCLE
-}
+public enum Icon {CROSS, CIRCLE}
