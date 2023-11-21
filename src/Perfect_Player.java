@@ -1,7 +1,12 @@
 import java.util.Random;
 
 public class Perfect_Player implements Opponent{
-
+    /**
+     * Generate the movement for this opponent type
+     * Checking if there is already a pattern in a column or row or diagonal, if yes put the icon on the last field of the pattern
+     * If no, then randomly choose a field
+     * @param board The game board
+     */
     public static void nextMovement(int[][] board) {
         boolean found = false;
 

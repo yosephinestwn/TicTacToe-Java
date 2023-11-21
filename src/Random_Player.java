@@ -1,7 +1,11 @@
 import java.util.Random;
 
 public class Random_Player implements Opponent{
-
+    /**
+     * Generate a random movement for this type of opponent
+     * Choose an empty field to be filled randomly
+     * @param board the game board
+     */
     public static void nextMovement(int[][] board) {
         Random rand = new Random();
 

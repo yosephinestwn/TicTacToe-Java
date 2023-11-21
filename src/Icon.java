@@ -1,1 +1,1 @@
-public enum Icon {CROSS, CIRCLE}
+public enum Icon {CROSS, CIRCLE} //The icon for the game

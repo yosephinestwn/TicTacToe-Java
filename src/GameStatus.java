@@ -1,3 +1,3 @@
-public enum GameStatus {
+public enum GameStatus { //Game status to determine the winner
     CROSS, CIRCLE, TIE
 }

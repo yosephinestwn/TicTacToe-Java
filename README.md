@@ -6,7 +6,8 @@ Hello! I am Yosephine and this is my very first project in GitHub: The TicTacToe
 I am using Java GUI for this project and in this README file you can find the details about this game :)
 
 ## Tutorial
-1. Click the "New Game" button to start a new game
+1. Run the main method / class
+2. Click the "New Game" button to start a new game
 2. Choose with which icon you want to play, like the traditional TicTacToe, you can choose one of the two icons (the Icon 'X' and 'O')
 3. Then, you get to choose your opponent's mode:
 
