@@ -5,6 +5,8 @@ Hello! I am Yosephine and this is my very first project in GitHub: The TicTacToe
 
 I am using Java GUI for this project and in this README file you can find the details about this game :)
 
+NOTICE: The layout of this game maybe will be different for each devices
+
 ## Tutorial
 1. Run the main method / class
 2. Click the "New Game" button to start a new game
